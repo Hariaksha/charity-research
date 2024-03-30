@@ -21,7 +21,7 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'MO' # CHANGE
+    state = 'MO' # CHANGE 
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state.upper()}_data.xlsx')
