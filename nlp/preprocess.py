@@ -24,7 +24,7 @@ for i in range(2, ws.max_row + 1):
     ntee = ws[f'I{i}'].value
     asset = ws[f'K{i}'].value
     revenue = ws[f'O{i}'].value
-    doc = nlp(mission)
+    doc = nlp(mission) # turn mission into a spaCy document
     lemmatized_text = " ".join([token.lemma_ for token in doc])
     ws2.append([ein, name, "", lemmatized_text, revenue, asset, ntee])
     count += 1
