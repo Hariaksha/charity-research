@@ -1,4 +1,5 @@
 import requests
+import datetime
 from bs4 import BeautifulSoup
 import openpyxl
 import csv
@@ -21,7 +22,8 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'MO' # CHANGE 
+    start = last = datetime.datetime.now()
+    state = 'PA' # CHANGE 
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state.upper()}_data.xlsx')
@@ -44,11 +46,11 @@ def main():
                 "Access denied | www.guidestar.org used Cloudflare to restrict access": "Access denied"
             }
             while soup.title.text in errors:
-                print(errors[soup.title.text])
-                print("Retrying in 10 seconds.")
+                print(errors[soup.title.text], "Retrying in 10 seconds.")
                 time.sleep(10)
                 soup = get_request(link)
-            print(count, ein, soup.title.text)
+            last = datetime.datetime.now()
+            print(count, last.strftime("%d %b %Y, %I:%M%p"), ein, soup.title.text)
             if soup.title.text == "": 
                 # if GuideStar does not have a page for this org, add it to the skipped list
                 ws2.append([ein, col['NAME'], link])
@@ -62,11 +64,11 @@ def main():
             name = soup.find('h1', class_='profile-org-name').text.strip()
             url = '' if soup.find('a', class_='hide-print-url') == None else soup.find('a', class_='hide-print-url').text
             ws.append([ein, name, col['STREET'], col['CITY'], state, col['ZIP'], link, url, col['NTEE_CD'], col['DEDUCTIBILITY'], col['ASSET_CD'], col['ASSET_AMT'], col['INCOME_CD'], col['INCOME_AMT'], col['REVENUE_AMT'], mission])
-            count += 0
+            count += 1
     except KeyboardInterrupt:
         pass
     workbook.save(f'data/{state.upper()}_data.xlsx') 
-    print("Saved", count)
+    print("Start:", start.strftime("%d %b %Y, %I:%M%p"), "\nLast:", last.strftime("%d %b %Y, %I:%M%p"), "\nSaved:", count)
 
 if __name__=="__main__":
     main()
