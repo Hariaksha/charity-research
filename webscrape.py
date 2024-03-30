@@ -21,7 +21,7 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'PA' # CHANGE
+    state = 'MO' # CHANGE
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state.upper()}_data.xlsx')
@@ -62,6 +62,7 @@ def main():
             name = soup.find('h1', class_='profile-org-name').text.strip()
             url = '' if soup.find('a', class_='hide-print-url') == None else soup.find('a', class_='hide-print-url').text
             ws.append([ein, name, col['STREET'], col['CITY'], state, col['ZIP'], link, url, col['NTEE_CD'], col['DEDUCTIBILITY'], col['ASSET_CD'], col['ASSET_AMT'], col['INCOME_CD'], col['INCOME_AMT'], col['REVENUE_AMT'], mission])
+            count += 0
     except KeyboardInterrupt:
         pass
     workbook.save(f'data/{state.upper()}_data.xlsx') 
