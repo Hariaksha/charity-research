@@ -1,9 +1,5 @@
-import requests
-import datetime
+import requests, datetime, openpyxl, csv, time
 from bs4 import BeautifulSoup
-import openpyxl
-import csv
-import time
 
 def get_request(link):
     while True:  
@@ -50,7 +46,7 @@ def main():
                 time.sleep(10)
                 soup = get_request(link)
             last = datetime.datetime.now()
-            print(count, last.strftime("%d %b %Y, %I:%M%p"), ein, soup.title.text)
+            print(count, last.strftime("%d %b, %I:%M%p"), ein, soup.title.text)
             if soup.title.text == "": 
                 # if GuideStar does not have a page for this org, add it to the skipped list
                 ws2.append([ein, col['NAME'], link])
@@ -68,7 +64,7 @@ def main():
     except KeyboardInterrupt:
         pass
     workbook.save(f'data/{state.upper()}_data.xlsx') 
-    print("Start:", start.strftime("%d %b %Y, %I:%M%p"), "\nLast:", last.strftime("%d %b %Y, %I:%M%p"), "\nSaved:", count)
+    print("Start:", start.strftime("%d %b, %I:%M%p"), "\nLast:", last.strftime("%d %b, %I:%M%p"), "\nSaved:", count)
 
 if __name__=="__main__":
     main()
