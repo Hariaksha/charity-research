@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 def get_request(link):
     while True:  
         try:
-            x = requests.get(link)
+            x = requests.get(link, timeout=5)
             ans = BeautifulSoup(x.content, 'html.parser')
             break
         except:
@@ -19,7 +19,7 @@ def numToEIN(num):
 
 def main():
     start = last = datetime.datetime.now()
-    state = 'PA' # CHANGE 
+    state = 'FL' # CHANGE 
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state.upper()}_data.xlsx')
