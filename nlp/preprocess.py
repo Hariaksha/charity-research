@@ -23,8 +23,8 @@ def main():
         asset = ws[f'K{i}'].value
         revenue = ws[f'O{i}'].value 
         doc = nlp(mission) # turn mission into a spaCy document
-        lemmatized_text = " ".join([token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct])
-        ws2.append([ein, name, mission, lemmatized_text, revenue, asset, ntee])
+        preprocessed_text = " ".join([token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct])
+        ws2.append([ein, name, mission, preprocessed_text, revenue, asset, ntee])
 
     workbook2.save('nlp/preprocessed-missions.xlsx')
     print("saved")
