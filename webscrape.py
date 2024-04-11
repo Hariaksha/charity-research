@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 def get_request(link):
     while True:  
         try:
-            x = requests.get(link, timeout=5)
+            x = requests.get(link, timeout=30)
             ans = BeautifulSoup(x.content, 'html.parser')
             break
         except:
@@ -19,7 +19,7 @@ def numToEIN(num):
 
 def main():
     start = last = datetime.datetime.now()
-    state = 'FL' # CHANGE 
+    state = 'NY' # CHANGE 
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state.upper()}_data.xlsx')
@@ -39,7 +39,8 @@ def main():
                 "www.guidestar.org | 504: Gateway time-out": "fixing 504 gateway time-out error",
                 "504: Gateway time-out": "fixing 504 gateway time-out error",
                 "www.guidestar.org | 520: Web server is returning an unknown error": "web server encountered unknown error.",
-                "Access denied | www.guidestar.org used Cloudflare to restrict access": "Access denied"
+                "Access denied | www.guidestar.org used Cloudflare to restrict access": "Access denied",
+                "Site Under Construction": "Site under construction"
             }
             while soup.title.text in errors:
                 print(errors[soup.title.text], "Retrying in 10 seconds.")
