@@ -1,6 +1,4 @@
-import openpyxl
-import csv
-import spacy
+import openpyxl, csv, spacy
 from collections import defaultdict
 
 def main():
@@ -8,7 +6,7 @@ def main():
     state = "WY"
     workbook = openpyxl.load_workbook(f'data/finished_with_revenue/{state}_data.xlsx')
     ws = workbook.active
-    nlp = spacy.load('en_core_web_md')
+    nlp = spacy.load('en_core_web_lg')
     for row in ws.iter_rows():
         mission = row[15].value
         doc = nlp(mission)
