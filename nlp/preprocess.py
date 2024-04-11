@@ -1,32 +1,22 @@
-import spacy 
-from spacy.tokens import doc
-import openpyxl
+import spacy, openpyxl
 
 def main():
     nlp = spacy.load('en_core_web_lg')
     print("Loaded model")
 
-    workbook = openpyxl.load_workbook('data/preliminary_march_data/data.xlsx')
+    workbook = openpyxl.load_workbook('data/american/data.xlsx', read_only=False)
     ws = workbook.active
-
-    workbook2 = openpyxl.load_workbook('nlp/preprocessed-missions.xlsx')
-    ws2 = workbook2.active
-    print("opened workbooks")
+    print("Opened workbook")
 
     for i in range(2, ws.max_row + 1):
-        if i == 502:
+        if i % 100 == 0:
             break
         mission = str(ws[f'P{i}'].value)
-        ein = ws[f'A{i}'].value
-        name = ws[f'B{i}'].value
-        ntee = ws[f'I{i}'].value
-        asset = ws[f'K{i}'].value
-        revenue = ws[f'O{i}'].value 
         doc = nlp(mission) # turn mission into a spaCy document
-        preprocessed_text = " ".join([token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct])
-        ws2.append([ein, name, mission, preprocessed_text, revenue, asset, ntee])
+        preprocessed_text = " ".join([token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct]) # take lemmas of words while lowercasing text and removing punctuation and stop words
+        ws[f'Q{i}'].value = str(preprocessed_text)
 
-    workbook2.save('nlp/preprocessed-missions.xlsx')
+    workbook.save('data/american/data.xlsx')
     print("saved")
 
 if __name__=="__main__":
