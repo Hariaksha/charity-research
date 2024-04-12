@@ -19,13 +19,13 @@ def numToEIN(num):
 
 def main():
     start = last = datetime.datetime.now()
-    state = 'NY' # CHANGE 
+    state = 'CA' # CHANGE 
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state.upper()}_data.xlsx')
     ws = workbook.active
     ws2 = workbook['Skipped']
-    count = 0
+    count = 1
     print("Press 'Ctrl-C' to exit the loop")
     try:
         for col in file:
