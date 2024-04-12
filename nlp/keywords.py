@@ -1,17 +1,14 @@
-import openpyxl, csv, spacy
+import openpyxl, csv
 from collections import defaultdict
 
 def main():
     counts = defaultdict(int)
-    state = "WY"
-    workbook = openpyxl.load_workbook(f'data/finished_with_revenue/{state}_data.xlsx')
+    workbook = openpyxl.load_workbook(f'data/american/data.xlsx')
     ws = workbook.active
-    nlp = spacy.load('en_core_web_lg')
-    for row in ws.iter_rows():
-        mission = row[15].value
-        doc = nlp(mission)
-        for token in doc:
-            counts[token] += 1
+    for i in range(2, ws.max_row + 1):
+        words = ws[f'Q{i}'].value.split()
+        for word in words:
+            counts[word] += 1
     filename = open('data/keywords.csv') 
     file = csv.DictReader(filename)
     for word, count in counts.items():
