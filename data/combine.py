@@ -13,7 +13,7 @@ def main():
             if ws[f'P{i}'].value != None:
                 new_ws.append([ws[f'A{i}'].value, ws[f'B{i}'].value, ws[f'C{i}'].value, ws[f'D{i}'].value, ws[f'E{i}'].value, ws[f'F{i}'].value, ws[f'G{i}'].value, ws[f'H{i}'].value, ws[f'I{i}'].value, ws[f'J{i}'].value, ws[f'K{i}'].value, ws[f'L{i}'].value, ws[f'M{i}'].value, ws[f'N{i}'].value, ws[f'O{i}'].value, ws[f'P{i}'].value])
         print(f"Finished {state} data")
-    new_workbook.save("data/april_data.xlsx")
+    new_workbook.save("data/american/data.xlsx")
     print("saved")
     
 if __name__=="__main__":
