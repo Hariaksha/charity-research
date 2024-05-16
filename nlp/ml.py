@@ -10,10 +10,10 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 def main():
     # Create dataframe with all my data
-    df = pd.read_excel('data/american/american.xlsx')  # Update with file path later
+    df = pd.read_excel('data/american/data.xlsx')  # Update with file path later
 
     # Preprocessing
-    X = df[['Mission Statement', 'Assets', 'NTEE Sector', 'State']]
+    X = df[['Mission Statement', 'Assets', 'NTEE Code', 'State']]
     y = df['Revenue']
 
     # 20% of data will be randomly set aside as test data. 80% will be used for training.
