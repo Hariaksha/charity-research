@@ -6,7 +6,7 @@ import openpyxl, datetime
 start = datetime.datetime.now()
 
 # Open data spreadsheet
-workbook = openpyxl.load_workbook(f'data/american/data.xlsx')
+workbook = openpyxl.load_workbook(f'data/american/data.xlsx', read_only=True)
 ws = workbook.active
 print("Opened spreadsheet")
 
