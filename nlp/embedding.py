@@ -14,6 +14,8 @@ print("Opened spreadsheet")
 data = []
 for i in range(2, ws.max_row + 1):
     data.append(ws[f'Q{i}'].value)
+    if i%10000==0:
+        print("Finished", i)
 print("Populated array")
 
 # Create TaggedDocuments
