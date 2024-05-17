@@ -2,20 +2,17 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import statsmodels.api as sm
 
-file_path = 'data/american/data.xlsx'
-df = pd.read_excel(file_path)
-df['Revenue'] = pd.to_numeric(df['Revenue'], errors='coerce')
-df['Assets'] = pd.to_numeric(df['Assets'], errors='coerce')
-df = df.dropna(subset=['Revenue', 'Assets'], inplace=True)
+df = pd.read_excel('data/american/data.xlsx')
+df['Revenue'] = pd.to_numeric(df['Revenue'])
+df['Assets'] = pd.to_numeric(df['Assets'])
 df['NTEE_First_Char'] = df['NTEE Code'].astype(str).str[0]
-df['NTEE_First_Char'] = df['NTEE_First_Char'].replace('', 'Z') # Z is for unknown sectors
 print("Made dataframe")
 
 # Create a histogram of the revenue data
 plt.figure(figsize=(10, 6))
 bin_edges = [0, 4999, 9999, 24999, 99999, 499999, 999999, 4999999, 9999999, 49999999]
 counts, bins, patches = plt.hist(df['Revenue'], bins=bin_edges, color='skyblue', edgecolor='black')
-plt.xticks(bins, labels=[f'{int(bins[i])}-{int(bins[i+1])}' for i in range(len(bins)-1)])
+# plt.xticks(bins[:-1], labels=[f'{int(bins[i])}-{int(bins[i+1])}' for i in range(len(bins)-1)], rotation=45)
 plt.title('Histogram of Revenue')
 plt.xlabel('Revenue')
 plt.ylabel('Frequency')
@@ -50,7 +47,7 @@ print(model.summary())
 plt.figure(figsize=(10, 6))
 plt.scatter(df['Assets'], df['Revenue'], alpha=0.5, label='Data points')
 plt.plot(df['Assets'], model.predict(X), color='red', label='Regression Line')
-plt.title('Regression Analysis and Scatter Plot (No Constant)')
+plt.title('Regression Analysis and Scatter Plot (No Constant Added)')
 plt.xlabel('Assets ($)')
 plt.ylabel('Revenue ($)')
 plt.legend()
