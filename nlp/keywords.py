@@ -1,28 +1,32 @@
-import openpyxl, datetime
-from collections import defaultdict
+import openpyxl, datetime, pandas as pd
+from collections import Counter
 
 def main():
-    start = last = datetime.datetime.now()
-    counts = defaultdict(int)
-    workbook = openpyxl.load_workbook(f'data/american/data.xlsx', read_only=True)
-    ws = workbook.active
-    print("Opened data spreadsheet")
-    for i in range(2, ws.max_row + 1):
-        if i % 1000 == 0:
-            print(i)
-        if ws[f'Q{i}'].value != None:
-            for word in ws[f'Q{i}'].value.split():
-                counts[word] += 1
+    # Get start time
+    start = datetime.datetime.now()
+
+    # Load the data
+    df = pd.read_excel('data/american/data.xlsx')
+    print("Made dataframe")
+
+    # Count words
+    words = df['Preprocessed Mission'].str.split(expand=True).stack()
+    counts = Counter(words)
+
+    # Open output workbook
     workbook = openpyxl.load_workbook(f'data/american/keywords.xlsx', read_only=False)
     ws = workbook.active
     print("Opened keywords spreadsheet")
     print("Number of words: ", len(counts))
+
+    # Print word counts
     for word, count in counts.items():
         ws.append([word, count])
-    last = datetime.datetime.now()
+
+    # Save workbook and finish
     workbook.save('data/american/keywords.xlsx')
     print("Saved")
-    print("Start:", start.strftime("%d %b, %I:%M%p"), "\nLast:", last.strftime("%d %b, %I:%M%p"))
+    print("Start:", start.strftime("%d %b, %I:%M%p"), "\nLast:", datetime.datetime.now().strftime("%d %b, %I:%M%p"))
 
 if __name__=="__main__":
     main()
