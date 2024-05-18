@@ -12,16 +12,18 @@ def main():
     # Count words
     words = df['Preprocessed Mission'].str.split(expand=True).stack()
     counts = Counter(words)
+    print("Finished counting")
+    print("Number of words: ", len(counts))
 
     # Open output workbook
     workbook = openpyxl.load_workbook(f'data/american/keywords.xlsx', read_only=False)
     ws = workbook.active
     print("Opened keywords spreadsheet")
-    print("Number of words: ", len(counts))
 
     # Print word counts
     for word, count in counts.items():
         ws.append([word, count])
+    print("Printed words and counts")
 
     # Save workbook and finish
     workbook.save('data/american/keywords.xlsx')
